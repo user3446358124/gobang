@@ -1,10 +1,6 @@
-#include "Chess.h"
-#include "Show.h"
-#include <vector>
+#include "include.h"
 
-
-
-extern vector<vector<int>> map;          //抽象后的地图
+extern std::vector<vector<int>> map;          //抽象后的地图
 extern int aiset;
 extern double aiPos, myPos;
 

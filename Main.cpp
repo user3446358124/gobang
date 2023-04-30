@@ -1,12 +1,4 @@
-#include <graphics.h>
-#include <time.h>
-#include <iostream>
-#include <stack>
-#include <vector>
-#include "Show.h"
-#include "Chess.h"
-#include "Users.h"
-
+#include "include.h"
 
 using namespace std;
 constexpr int  Width = 800;
