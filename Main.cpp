@@ -7,7 +7,6 @@
 #include "Chess.h"
 #include "Users.h"
 
-#pragma comment(lib,"Winmm.lib")
 
 using namespace std;
 constexpr int  Width = 800;

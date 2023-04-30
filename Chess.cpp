@@ -2,13 +2,13 @@
 #include "Show.h"
 #include <vector>
 
-#pragma comment(lib,"Winmm.lib")
 
-extern vector<vector<int>> map;
+
+extern vector<vector<int>> map;          //抽象后的地图
 extern int aiset;
 extern double aiPos, myPos;
 
-int MyChess::Get_xy(int& x, int& y)//判断鼠标是否落入空交点内
+int MyChess::Get_xy(int& x, int& y)      //判断鼠标是否落入空交点内
 {
 	for (int i = 0; i < 18; i++) 
 	{

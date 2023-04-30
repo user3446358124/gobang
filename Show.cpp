@@ -1,6 +1,4 @@
-#include "Show.h"
-#include "Chess.h"
-#include <vector>
+#include "include.h"
 
 #pragma comment(lib,"Winmm.lib")
 

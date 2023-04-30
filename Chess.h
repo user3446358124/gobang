@@ -10,6 +10,8 @@
 #include <vector>
 #include "Class.h"
 
+#pragma comment(lib,"Winmm.lib")         //链接时添加libname库到库依赖列表中，Winmm.lib是一个Windows多媒体库，它提供了一些音频、视频和定时器的功能
+
 using namespace std;
 
 class Chess

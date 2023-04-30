@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="Chess.h" />
     <ClInclude Include="Class.h" />
+    <ClInclude Include="include.h" />
     <ClInclude Include="Show.h" />
     <ClInclude Include="Users.h" />
   </ItemGroup>
