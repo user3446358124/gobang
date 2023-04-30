@@ -25,7 +25,7 @@ public:
 	vector<int> Get_Nums4(int x, int y);
 
 	int  Get_Points(int x, int y, int ch);				/*获取该点的得分*/
-	int  x_Points(vector<int> nums, int ch);			/*根据敌我棋的数量获取得分*/
+	int  xy_Points(vector<int> nums, int ch);			/*根据敌我棋的数量获取得分*/
 
 	bool is_Ok(int x, int y)		                    /*判断该点是否在棋盘范围内*/
 	{

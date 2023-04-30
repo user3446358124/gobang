@@ -18,8 +18,6 @@ template<typename T> constexpr auto switch_xy(T x)
 {
 	return x * 30 + 20;
 }
-
-
 /*将实际位置转化为坐标*/
 template<typename T> constexpr auto reswitch_xy(T x)
 {
