@@ -1,7 +1,5 @@
 #include "include.h"
 
-using namespace std;
-
 void Users::Read(void)
 {
 	ifstream in("users.dat", ios::binary | ios::in);

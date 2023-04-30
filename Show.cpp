@@ -1,9 +1,5 @@
 #include "include.h"
 
-#pragma comment(lib,"Winmm.lib")
-
-using namespace std;
-
 extern int aiset;
 extern stack<pair<int, int>> stk;
 extern vector<vector<int>> map;

@@ -1,7 +1,5 @@
 #include "include.h"
 
-using namespace std;
-
 constexpr int Width = 800;
 constexpr int High = 640;
 vector<vector<int>> map(18, vector<int>(18, -1)), cop(map);		//map是棋盘，-1空，0电脑，1友方
