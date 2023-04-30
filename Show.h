@@ -1,4 +1,6 @@
+
 #pragma once
+
 #ifndef SHOW_H
 #define SHOW_H
 
@@ -34,7 +36,7 @@ public:
 	void End(int who, Users& user, int steps);	/*游戏结束绘制页面*/
 };
 
-#endif // !SHOW_H
+#endif // 
 
 
 

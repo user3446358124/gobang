@@ -1,4 +1,7 @@
+//存储使用者的信息
+
 #pragma once
+
 #ifndef  USERS_H
 #define  USERS_H
 
@@ -12,8 +15,9 @@ public:
 	int drawcnt = 0;	/*平局场数*/
 	int minsteps = 0;	/*胜利最短步数*/
 	int restcnt = 10;	/*剩余悔棋步数*/
+
 	void Read(void);	/*读取文档*/
 	void Write(void);	/*存档*/
 };
 
-#endif // ! USERS_H
+#endif // 

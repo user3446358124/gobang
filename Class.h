@@ -1,4 +1,7 @@
+//创建各种类
+
 #pragma once
+
 #ifndef  CLASS_H
 #define	 CLASS_H
 
@@ -11,5 +14,6 @@ class Chess;
 class MyChess;
 class AiChess;
 class Users;
-#endif // ! CLASS_H
+
+#endif // 
 
