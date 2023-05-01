@@ -141,7 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Chess.cpp" />
+    <ClCompile Include="Flight.cpp" />
     <ClCompile Include="Show.cpp" />
     <ClCompile Include="Users.cpp" />
     <ClCompile Include="Main.cpp" />

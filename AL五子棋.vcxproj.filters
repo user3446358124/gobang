@@ -21,7 +21,7 @@
     <ClCompile Include="Show.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Chess.cpp">
+    <ClCompile Include="Flight.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Users.cpp">

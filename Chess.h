@@ -56,10 +56,19 @@ public:
 	void get_assuse(wchar_t*& wstr);                    //评价
 };
 
+class store                                            //存储分数，坐标
+{
+public:
+	int score;
+	int x;
+	int y;
+};
 
 class AiChess : public Chess
 {
 public:
+	vector<store> scorestore;
+
 	bool is_Ok(int x, int y)                           //判断该点是否在棋盘范围内
 	{
 		return x >= 0 && y >= 0 && x < 18 && y < 18;
@@ -70,6 +79,9 @@ public:
 		return (!Get_Nums1(x, y).empty() && Get_Nums1(x, y)[0] == 5) || (!Get_Nums2(x, y).empty() && Get_Nums2(x, y)[0] == 5) || (!Get_Nums3(x, y).empty() && Get_Nums3(x, y)[0] == 5) || (!Get_Nums4(x, y).empty() && Get_Nums4(x, y)[0] == 5);
 	}
 	bool gameOver(Show s, Users& user) override;       //重载gameOver函数
+	bool com(store a, store b);
+	store alpha_beta(int depth, vector<store> store);//alpha-beta剪枝算法
+
 };
 
 

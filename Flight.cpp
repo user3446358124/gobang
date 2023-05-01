@@ -44,7 +44,7 @@ void AiChess::Get_key_Setchess(MyChess& mychs)
 		{
 			int i, j;
 
-			srand((unsigned)time(0));        //使得电脑下棋尽可能随机化
+			srand((unsigned)time(0));        //使得电脑下棋尽可能随机化-修改处
 			do
 			{
 				i = rand() % 18;
@@ -52,19 +52,22 @@ void AiChess::Get_key_Setchess(MyChess& mychs)
 			}
 			while (visit[i][j] != -1);
 			visit[i][j] = 0;
-			points = Get_Points(i, j, 1);
-			
-			if (points > maxpoints)         //获取最大的分点
-			{
-				maxpoints = points;
-				maxx = i;
-				maxy = j;
-			}
+			points = Get_Points(i, j, 1);	//计算当前位置的得分
+			scorestore.push_back(store{ points,i,j });   //将当前位置的得分存入
+
 			book++;
 		}
 
-		aiset = (maxx << 5) | maxy;
-		map[maxx][maxy] = 0;
+		sort(scorestore.begin(),scorestore.end(), com); //将得分从大到小排序
+		vector<store> it{scorestore.begin(), scorestore.end()};
+		store result;
+		result=alpha_beta(3, it);                              //alpha-beta剪枝算法
+		maxx = result.x;
+		maxy = result.y;
+		
+
+		aiset = (maxx << 5) | maxy;        //将最大得分的坐标转化为二进制
+		map[maxx][maxy] = 0;               //下棋
 	}
 
 	myPos = mychs.GetNowPoints(1);      //己方得分
@@ -108,6 +111,16 @@ int Chess::Get_Points(int x, int y, int ch)
 	}
 
 	return ret;                                                 // 返回总得分
+}
+
+/*alpha_beta剪枝算法*/
+store AiChess::alpha_beta(int depth, vector<store> store)
+{
+	int best = -100000000;                                            // 初始化最佳得分
+	int worst = 100000000;                                            // 初始化最差得分
+
+	if (depth == 0 || store.size() == 0)                              // 如果搜索深度为0或者没有可搜索的位置
+		return Get_Points(aiset >> 5, aiset & 0x1f, 0) - Get_Points(aiset >> 5, aiset & 0x1f, 1); // 返回当前位置的得分
 }
 
 /*获取指定位置(x,y)横向连续五个棋子的黑白数量*/
@@ -189,7 +202,7 @@ vector<int> Chess::Get_Nums4(int x, int y)
 	return vector<int>({ k,t });                      // 返回0和1的数量
 }
 
-/*通过双方棋子 通过加权 判断位置价值*/
+/*通过双方棋子 加权 判断位置价值*/
 int Chess::xy_Points(vector<int> nums, int ch)
 {
 	if (nums.empty())	
@@ -370,5 +383,10 @@ void MyChess::get_assuse(wchar_t*& wstr)
 		wstr = const_cast<wchar_t*>(L"均势");
 
 	return;
+}
+
+bool AiChess::com(store a, store b)
+{
+	return a.score > b.score;
 }
 
