@@ -53,6 +53,7 @@ void AiChess::Get_key_Setchess(MyChess& mychs)
 			while (visit[i][j] != -1);
 			visit[i][j] = 0;
 			points = Get_Points(i, j, 1);
+			points = Get_Points(i, j, 1);	//计算当前位置的得
 			
 			if (points > maxpoints)         //获取最大的分点
 			{
@@ -65,6 +66,9 @@ void AiChess::Get_key_Setchess(MyChess& mychs)
 
 		aiset = (maxx << 5) | maxy;
 		map[maxx][maxy] = 0;
+
+		aiset = (maxx << 5) | maxy;        //将最大得分的坐标转化为二进制
+		map[maxx][maxy] = 0;               //下棋
 	}
 
 	myPos = mychs.GetNowPoints(1);      //己方得分

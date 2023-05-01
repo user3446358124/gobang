@@ -31,6 +31,6 @@ void Users::Write(void)
 	out.write((char*)&minsteps, sizeof(int));
 	out.write((char*)&restcnt, sizeof(int));
 
-	out.Close(); // 关闭文件流
+	out.close(); // 关闭文件流
 }
 
