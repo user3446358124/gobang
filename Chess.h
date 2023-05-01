@@ -24,16 +24,16 @@ public:
 	vector<int> Get_Nums3(int x, int y);
 	vector<int> Get_Nums4(int x, int y);
 
-	int  Get_Points(int x, int y, int ch);				/*获取该点的得分*/
-	int  xy_Points(vector<int> nums, int ch);			/*根据敌我棋的数量获取得分*/
+	int  Get_Points(int x, int y, int ch);				//获取该点的得分
+	int  xy_Points(vector<int> nums, int ch);			//根据敌我棋的数量获取得分
 
-	bool is_Ok(int x, int y)		                    /*判断该点是否在棋盘范围内*/
+	bool is_Ok(int x, int y)		                    //判断该点是否在棋盘范围内
 	{
 		return x >= 0 && y >= 0 && x < 18 && y < 18;
 	}
 
-	virtual bool win(int x, int y) = 0;                 /*是否赢*/
-	virtual bool gameOver(Show s, Users& user) = 0;		/*判断是否结束游戏*/
+	virtual bool win(int x, int y) = 0;                 //是否赢
+	virtual bool gameOver(Show s, Users& user) = 0;		//判断是否结束游戏
 	double GetNowPoints(int ch);
 };
 
@@ -43,33 +43,33 @@ class MyChess : public Chess
 public:
 	MyChess() : steps(0), now(false) {};
 
-	int Get_xy(int& x, int& y);		                    /*判断该点是否处于空交点范围内*/
-	int steps;						                    /*走的步数*/
-	bool now;						                    /*是否轮到我们下棋*/
+	int Get_xy(int& x, int& y);		                    //判断该点是否处于空交点范围内
+	int steps;						                    //走的步数
+	bool now;						                    //是否轮到我们下棋
 
-	bool win(int x, int y) override                     /*重载胜利函数 判断是否赢*/
+	bool win(int x, int y) override                     //重载胜利函数 判断是否赢
 	{
 		return (!Get_Nums1(x, y).empty() && Get_Nums1(x, y)[1] == 5) || (!Get_Nums2(x, y).empty() && Get_Nums2(x, y)[1] == 5) || (!Get_Nums3(x, y).empty() && Get_Nums3(x, y)[1] == 5) || (!Get_Nums4(x, y).empty() && Get_Nums4(x, y)[1] == 5);
 	}
-	bool gameOver(Show s, Users& user) override;        /*判断是否结束游戏*/
-	void get_grade(Users user, wchar_t*& wstr);         /*判断等级*/
-	void get_assuse(wchar_t*& wstr);                    /*评价*/
+	bool gameOver(Show s, Users& user) override;        //判断是否结束游戏
+	void get_grade(Users user, wchar_t*& wstr);         //判断等级
+	void get_assuse(wchar_t*& wstr);                    //评价
 };
 
 
 class AiChess : public Chess
 {
 public:
-	bool is_Ok(int x, int y)                           /*判断该点是否在棋盘范围内*/
+	bool is_Ok(int x, int y)                           //判断该点是否在棋盘范围内
 	{
 		return x >= 0 && y >= 0 && x < 18 && y < 18;
 	}
-	void Get_key_Setchess(MyChess& mychs);             /*获取得分最高的位置，并下棋*/
-	bool win(int x, int y) override                    /*重载胜利函数 判断是否赢*/
+	void Get_key_Setchess(MyChess& mychs);             //获取得分最高的位置，并下棋
+	bool win(int x, int y) override                    //重载胜利函数 判断是否赢
 	{
 		return (!Get_Nums1(x, y).empty() && Get_Nums1(x, y)[0] == 5) || (!Get_Nums2(x, y).empty() && Get_Nums2(x, y)[0] == 5) || (!Get_Nums3(x, y).empty() && Get_Nums3(x, y)[0] == 5) || (!Get_Nums4(x, y).empty() && Get_Nums4(x, y)[0] == 5);
 	}
-	bool gameOver(Show s, Users& user) override;       /*重载gameOver函数*/
+	bool gameOver(Show s, Users& user) override;       //重载gameOver函数
 };
 
 
