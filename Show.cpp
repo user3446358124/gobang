@@ -96,10 +96,14 @@ void Show::show(MyChess& mychs, Users& user)
 	_stprintf_s(str, _T("对方棋局得分: %.1f"), aiPos);
 	outtextxy(570, 410, str);
 
+	//胜率
+	_stprintf_s(str, _T("您目前的胜率为：%.2f%%"), 100 * myPos / (myPos + aiPos));
+	outtextxy(570, 450, str);
+
 	// 显示当前局面评估信息
 	mychs.get_assuse(wstr);
 	_stprintf_s(str, _T("当前您的棋局评估：%s"), wstr);
-	outtextxy(570, 450, str);
+	outtextxy(570, 490, str);
 
 	// 显示当前回合信息
 	if (mychs.now == true)
