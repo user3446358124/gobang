@@ -6,6 +6,14 @@ extern std::vector<vector<int>> map;          //抽象后的地图
 extern int aiset;                             //ai决策结果
 extern double aiPos, myPos;                   //我方和电脑棋局得分
 
+
+const int INF = 1000000000000;
+const int MAXN = 18;  // 棋盘大小
+const int MAXM = 324;  // 棋盘格子数
+extern std::vector<vector<int>> map;          //抽象后的地图
+extern int aiset;                             //ai决策结果
+extern double aiPos, myPos;                   //我方和电脑棋局得分
+
 /*判断鼠标是否落入空交点内*/
 int MyChess::Get_xy(int& x, int& y)           
 {
@@ -23,6 +31,8 @@ int MyChess::Get_xy(int& x, int& y)
 	}
 	return 0;
 }
+
+
 
 /*获取得分最高的位置，并下棋*/
 void AiChess::Get_key_Setchess(MyChess& mychs)
@@ -49,12 +59,11 @@ void AiChess::Get_key_Setchess(MyChess& mychs)
 			{
 				i = rand() % 18;
 				j = rand() % 18;
-			}
-			while (visit[i][j] != -1);
+			} while (visit[i][j] != -1);
 			visit[i][j] = 0;
 			points = Get_Points(i, j, 1);
 			points = Get_Points(i, j, 1);	//计算当前位置的得
-			
+
 			if (points > maxpoints)         //获取最大的分点
 			{
 				maxpoints = points;
@@ -80,6 +89,10 @@ void AiChess::Get_key_Setchess(MyChess& mychs)
 	mciSendString(_T("play chs"), NULL, 0, NULL); //播放名为chs的设备
 	return ;
 }
+
+/*优化算法*/
+
+/*优化算法*/
 
 /* 计算棋子在指定位置的得分*/
 int Chess::Get_Points(int x, int y, int ch)

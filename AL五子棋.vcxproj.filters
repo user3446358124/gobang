@@ -27,6 +27,9 @@
     <ClCompile Include="Users.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="alphabeta.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Show.h">
