@@ -1,8 +1,8 @@
 #include "include.h"
 
-const int INF = 1000000000000;
-const int MAXN = 18;  // 棋盘大小
-const int MAXM = 324;  // 棋盘格子数
+const int INF = 1000000000000;                //Alpha,beta
+const int MAXN = 18;                          // 棋盘大小
+const int MAXM = 324;                         // 棋盘格子数
 extern std::vector<vector<int>> map;          //抽象后的地图
 extern int aiset;                             //ai决策结果
 extern double aiPos, myPos;                   //我方和电脑棋局得分

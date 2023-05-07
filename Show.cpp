@@ -10,7 +10,7 @@ static const char dir2[] = { "123456789ABCDEFGHI" };  //
 void Show::show(MyChess& mychs, Users& user)
 {
 	BeginBatchDraw();                                 //函数表示开始一批次的绘制，可以将多个图形一次性绘制出来，提高绘制效率。
-	setbkcolor(WHITE);                           //设置背景颜色为黄色
+	setbkcolor(WHITE);                            //设置背景颜色为白色
 	cleardevice();                                    //清空屏幕并用当前背景色填充整个屏幕。
 	setcolor(BLACK);                              //函数将当前画笔颜色设置为黑色。
 	TCHAR row, col;                                   //可以是w_chat
@@ -66,7 +66,7 @@ void Show::show(MyChess& mychs, Users& user)
 	_stprintf_s(str, _T("剩余悔棋步数: %d"), user.restcnt);
 	outtextxy(600, 145, str);
 
-	setcolor(YELLOW);                                 //右上角 画方框
+	setcolor(BLUE);                                 //右上角 画方框
 	line(580, 2, 580, 170);
 	line(580, 170, 735, 170);
 	line(735, 170, 735, 2);
