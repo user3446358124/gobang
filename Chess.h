@@ -70,8 +70,8 @@ public:
 		return (!Get_Nums1(x, y).empty() && Get_Nums1(x, y)[0] == 5) || (!Get_Nums2(x, y).empty() && Get_Nums2(x, y)[0] == 5) || (!Get_Nums3(x, y).empty() && Get_Nums3(x, y)[0] == 5) || (!Get_Nums4(x, y).empty() && Get_Nums4(x, y)[0] == 5);
 	}
 	bool gameOver(Show s, Users& user) override;       //ÖØÔØgameOverº¯Êı
+	int AlphaBetaSearch(vector<vector<int>>& map, int depth, int alpha, int beta, bool maximizingPlayer, int& best_x, int& best_y);
 };
-
 
 #endif // !CHESS_H
 
