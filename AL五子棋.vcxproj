@@ -141,10 +141,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="alphabeta.cpp" />
-    <ClCompile Include="Chess.cpp" />
+    <ClCompile Include="Ai.cpp" />
+    <ClCompile Include="Score.cpp" />
     <ClCompile Include="Show.cpp" />
-    <ClCompile Include="Users.cpp" />
+    <ClCompile Include="Save.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>

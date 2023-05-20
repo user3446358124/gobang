@@ -120,7 +120,6 @@ void Show::show(MyChess& mychs, Users& user)
 	return;
 }
 
-
 void Show::setChess(int x, int y, int choice)//0为电脑下棋，1为自己下棋
 {
 	setfillcolor(RED);                   //悔棋部分
