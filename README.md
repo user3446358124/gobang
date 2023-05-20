@@ -102,3 +102,7 @@ user.txt 文件                                  //存档
 user.txt 文件                                  //存档
 ```
 
+3. 参考资料
+https://github.com/lihongxun945/myblog 算法思想提纲
+
+https://blog.csdn.net/livingsu/article/details/104536005 qt实现
