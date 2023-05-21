@@ -6,6 +6,7 @@
 #include "Show.h"         //×Ô½¨¿â
 #include "Chess.h"
 #include "Users.h"
+#include "Readers.h"
 
 
 #include <graphics.h>     //¹Ù·½¿â
@@ -15,6 +16,9 @@
 #include <vector>
 #include <limits>
 #include <unordered_map>
+#include <fstream>
+#include <string>
+#include <sstream>
 
 using namespace std;
 

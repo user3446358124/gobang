@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Show.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -28,6 +25,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Score.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Readers.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -45,6 +48,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Readers.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

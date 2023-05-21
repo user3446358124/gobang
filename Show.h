@@ -12,19 +12,6 @@
 #include <stack>
 #include <vector>
 
-
-/*将坐标转化为实际位置*/
-template<typename T> constexpr auto switch_xy(T x)
-{
-	return x * 30 + 20;
-}
-/*将实际位置转化为坐标*/
-template<typename T> constexpr auto reswitch_xy(T x)
-{
-	return (x - 20) / 30;
-}
-
-
 class Show
 {
 public:

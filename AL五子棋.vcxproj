@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <Keyword>Win32Proj</Keyword>
+    <Keyword>Qt5VSv1.0</Keyword>
     <ProjectGuid>{45b0b08e-b795-48ca-9cf3-f08b55d6bd58}</ProjectGuid>
     <RootNamespace>AL五子棋</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
@@ -142,15 +142,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ai.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Readers.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="Show.cpp" />
     <ClCompile Include="Save.cpp" />
-    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Chess.h" />
     <ClInclude Include="Class.h" />
     <ClInclude Include="include.h" />
+    <ClInclude Include="Readers.h" />
     <ClInclude Include="Show.h" />
     <ClInclude Include="Users.h" />
   </ItemGroup>

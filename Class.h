@@ -14,6 +14,7 @@ class Chess;
 class MyChess;
 class AiChess;
 class Users;
+class Reader;
 
 #endif // 
 

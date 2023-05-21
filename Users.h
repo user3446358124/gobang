@@ -5,7 +5,7 @@
 #ifndef  USERS_H
 #define  USERS_H
 
-#include <fstream>
+#include "include.h"
 
 class Users
 {
@@ -19,5 +19,6 @@ public:
 	void Read(void);	//¶ÁÈ¡ÎÄµµ
 	void Write(void);	//´æµµ
 };
+
 
 #endif // 
