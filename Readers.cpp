@@ -1,19 +1,49 @@
 #include "include.h"
 
-vector<vector<int>> Readers::read_map_from_file(const std::string& filename, vector<vector<int>> map)
+std::vector<std::vector<int>> & Readers::read_map_from_file(const std::string& filename, std::vector<std::vector<int>>& map)
 {
-    ifstream file(filename);
-    string line;
+	std::ifstream file(filename);
+	if (!file.is_open()) {
+		throw std::runtime_error("Failed to open file: " + filename);
+	}
 
-    while (getline(file, line))
-    {
-        vector<int> row;
-        stringstream ss(line);
-        int value;
-        while (ss >> value) {
-            row.push_back(value);
-        }
-        map.push_back(row);
-    }
-    return map;
+	std::string line;
+	while (std::getline(file, line))
+	{
+		std::vector<int> row;
+		std::stringstream ss(line);
+		int value;
+		while (ss >> value) 
+		{
+			row.push_back(value);
+		}
+		map.push_back(row);
+	}
+
+	if (file.bad()) 
+	{
+		throw std::runtime_error("Error reading file: " + filename);
+	}
+	map = {
+	{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1, -1, -1,  0,  1,  0, -1, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1, -1, -1,  0,  0, -1, -1, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1,  1, -1,  0,  1, -1, -1, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1,  0,  1,  1,  1, -1, -1, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1,  1,  0,  1, -1,  1, -1, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1, -1,  0,  1,  0, -1,  0, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1, -1, -1,  0,  1, -1, -1, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+	{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+	};
+
+	return map;
 }

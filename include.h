@@ -10,7 +10,7 @@
 
 
 #include <graphics.h>     //¹Ù·½¿â
-#include <time.h>
+#include <ctime>
 #include <iostream>
 #include <stack>
 #include <vector>
@@ -19,7 +19,11 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <chrono>
+#include <tchar.h>
 
 using namespace std;
+
+#define _CRT_SECURE_NO_WARNINGS
 
 #endif
