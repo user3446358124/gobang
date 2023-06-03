@@ -49,6 +49,7 @@ void Show::show(MyChess& mychs, Users& user)
 	//double nowTime = clock(), sec = 20 - ((nowTime - startTime) / CLOCKS_PER_SEC);
 	mychs.get_grade(user, wstr);
 	setcolor(BLACK);
+
 	/*显示用户信息*/
 	outtextxy(600, 5, _T("用户：challger"));
 	_stprintf_s(str, _T("胜场：%d"), user.wincnt);

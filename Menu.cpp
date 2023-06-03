@@ -11,6 +11,8 @@ int aiset;							//记录电脑上一步下的位置
 bool firstorsecond=1;
 time_t first, second;
 bool a, b, c, d, e, f;					//控制显示
+extern bool flag = 1;
+extern int nonecount;
 
 
 void playorder(void)
@@ -110,7 +112,7 @@ int computer_and_player(void)
 		int minutes = static_cast<int>((int)time_diff / 60);
 		int seconds = static_cast<int>((int)time_diff % 60);
 		std::string turntimeshow = std::to_string(minutes) + "min: " + std::to_string(seconds) + "s";
-		outtextxy(570, 490, TCHAR(turntimeshow.c_str())); // 输出文本
+		//outtextxy(570, 490, TCHAR(turntimeshow.c_str())); // 输出文本
 
 		FlushBatchDraw(); // 刷新绘制
 		EndBatchDraw(); // 结束批量绘制
@@ -173,45 +175,65 @@ int end_game(void)
 	Show s;
 	AiChess ai;
 	Users user;                     //正常创建
-	Readers readers;
+	Readers readers;                //读取地图
 
 	std::mutex mt;                  //windows api 控制声音
 	user.Read();                    //信息
+
 
 	map = readers.read_map_from_file("level1.txt", map);
 	mychs.steps = 0;
 	initgraph(Width, High);
 
+	char turntimeshow[20] = "0:0";
 	bool isRunning = true;          //增加一个控制循环的变量
-	bool flag = 0;
 	while (isRunning)
 	{
-		if (flag)
+		first = time(NULL);
+		if (!firstorsecond)
 			ai.Get_key_Setchess(mychs);	//Al回合
 		s.show(mychs, user);		//展示地图
-		if (ai.gameOver(s, user))	//判断是否胜利
-		{
-			map = readers.read_map_from_file("level1", map);              //重置地图
-			mychs.steps = 0;        //重置步数
-			continue;               //跳过本次循环，重新开始
-		}
 
-		flag = 1;
-		mychs.now = true;			//你的回合 set now = true
-		s.Mouse(mychs, user);		//鼠标确定选择,set now = false
-		s.show(mychs, user);        //展示地图
-		if (mychs.gameOver(s, user))//判断是否胜利	
-		{
-			map = readers.read_map_from_file("level1", map);              //重置地图
-			mychs.steps = 0;        //重置步数
-			continue;               //跳过本次循环，重新开始
-		}
+		BeginBatchDraw();								 //函数表示开始一批次的绘制，可以将多个图形一次性绘制出来，提高绘制效率。
+		outtextxy(570, 530, wchar_t((turntimeshow))); // 输出文本
 		FlushBatchDraw();
 		EndBatchDraw(); //函数表示结束一批次的绘制，将缓冲区的图形一次性绘制出来。
+
+		if (ai.gameOver(s, user))	//判断是否胜利
+		{
+			map = cop;              //重置地图
+			mychs.steps = 0;        //重置步数
+			continue;               //跳过本次循环，重新开始570 530
+		}
+
+		firstorsecond = 0;
+		mychs.now = true;			//你的回合 set now = true
+		s.Mouse(mychs, user);		//鼠标确定选择,set now = false
+		second = time(NULL);
+
+		s.show(mychs, user);        //展示地图
+
+		BeginBatchDraw(); // 开始批量绘制
+
+		double time_diff = difftime(second, first);
+		int minutes = static_cast<int>((int)time_diff / 60);
+		int seconds = static_cast<int>((int)time_diff % 60);
+		std::string turntimeshow = std::to_string(minutes) + "min: " + std::to_string(seconds) + "s";
+		//outtextxy(570, 490, TCHAR(turntimeshow.c_str())); // 输出文本
+
+		FlushBatchDraw(); // 刷新绘制
+		EndBatchDraw(); // 结束批量绘制
+
+
+		if (mychs.gameOver(s, user))//判断是否胜利	
+		{
+			map = cop;              //重置地图
+			mychs.steps = 0;        //重置步数
+			continue;               //跳过本次循环，重新开始
+		}
+
 	}
 	return 0;
-
-
 }
 
 int online_player(void)

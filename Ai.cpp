@@ -7,6 +7,8 @@ const int MAXM = 324;                         // 棋盘格子数
 extern std::vector<vector<int>> map;          //抽象后的地图
 extern int aiset;                             //ai决策结果
 extern double aiPos, myPos;                   //我方和电脑棋局得分
+extern bool flag;
+extern int nonecount;
 
 
 /*alpha-beta*/
@@ -24,16 +26,19 @@ int Get_Points(int x, int y, int player, const vector<vector<int>>& map);
 unsigned long long zobrist_hash[MAXM][3];
 unsigned long long zobrist_key = 0;
 
-// Zobrist哈希初始化
-void Zobrist_Init() {
+void Zobrist_Init()
+{
 	srand(time(NULL));
-	for (int i = 0; i < MAXM; i++) {
-		for (int j = 0; j < 3; j++) {
+	for (int i = 0; i < MAXM; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
 			zobrist_hash[i][j] = ((unsigned long long)rand() << 32) | rand();
 		}
 	}
 	zobrist_key = ((unsigned long long)rand() << 32) | rand();
 }
+
 
 // 计算当前棋盘的哈希值
 unsigned long long Zobrist_Hash(vector<vector<int>>& map) {
@@ -52,43 +57,60 @@ unsigned long long Zobrist_Hash(vector<vector<int>>& map) {
 
 // αβ剪枝函数
 int AlphaBeta(vector<vector<int>>& map, int depth, int alpha, int beta, bool max_player, int& best_x, int& best_y, unordered_map<unsigned long long, int>& cache) {
+	// 计算当前游戏状态的 Zobrist 哈希值
 	unsigned long long hash_value = Zobrist_Hash(map);
-	if (cache.count(hash_value) > 0) 
+	// 如果缓存中已经有了这个哈希值对应的结果，直接返回
+	if (cache.count(hash_value) > 0)
 	{
 		return cache[hash_value];
 	}
 
-	if (depth == 0 || Is_Game_Over(map, 0) || Is_Game_Over(map, 1)) 
+	// 如果搜索树达到了最大深度，或者游戏已经结束，返回当前状态的评分
+	if (depth == 0 || Is_Game_Over(map, 0) || Is_Game_Over(map, 1))
 	{
 		return Get_Points(best_x, best_y, max_player ? 0 : 1, map);
 	}
 
+	// 获取地图的行数和列数
 	int n = map.size();
 	int m = map[0].size();
+	// 初始化最佳得分
 	int best_score = max_player ? INT_MIN : INT_MAX;
+	// 遍历地图上的每个位置
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
+			// 如果当前位置为空
 			if (map[i][j] == -1) {
+				// 尝试在这个位置落子
 				map[i][j] = max_player ? 0 : 1;
+				// 递归调用 AlphaBeta 函数计算得分
 				int score = AlphaBeta(map, depth - 1, alpha, beta, !max_player, best_x, best_y, cache);
+				// 恢复地图状态
 				map[i][j] = -1;
+				// 如果是最大化玩家
 				if (max_player) {
+					// 更新最佳得分和最佳移动
 					if (score > best_score) {
 						best_score = score;
 						best_x = i;
 						best_y = j;
+						// 更新 alpha 值
 						alpha = max(alpha, best_score);
+						// 如果 alpha 大于等于 beta，剪枝并返回最佳得分
 						if (alpha >= beta) {
 							return best_score;
 						}
 					}
 				}
 				else {
+					// 更新最佳得分和最佳移动
 					if (score < best_score) {
 						best_score = score;
 						best_x = i;
 						best_y = j;
+						// 更新 beta 值
 						beta = min(beta, best_score);
+						// 如果 beta 小于等于 alpha，剪枝并返回最佳得分
 						if (beta <= alpha) {
 							return best_score;
 						}
@@ -97,6 +119,7 @@ int AlphaBeta(vector<vector<int>>& map, int depth, int alpha, int beta, bool max
 			}
 		}
 	}
+	// 将结果存入缓存并返回最佳得分
 	cache[hash_value] = best_score;
 	return best_score;
 }
@@ -275,7 +298,7 @@ int MyChess::Get_xy(int& x, int& y)
 /*获取得分最高的位置，并下棋*/
 void AiChess::Get_key_Setchess(MyChess& mychs)
 {
-	if (mychs.steps == 0)                     //开始时走天元
+	if ((mychs.steps == 0)&&flag)                     //开始时走天元
 	{
 		map[8][8] = 0;
 		aiset = 0x108;                        //清零
@@ -285,9 +308,10 @@ void AiChess::Get_key_Setchess(MyChess& mychs)
 		int points, maxpoints = -1;          //表示当前位置的得分,表示最大的得分
 		int maxx = 0, maxy = 0;              //maxx和maxy表示最大得分对应的坐标
 		int book = 0;                        //book表示已经遍历过的位置的数量
-		int cnt = 324 - 2 * mychs.steps;     //cnt表示需要遍历的总位置的数量
+		int cnt = 324 - 2 * mychs.steps- nonecount;     //cnt表示需要遍历的总位置的数量
 		vector<vector<int>> visit(map);      //记录哪些位置已经被访问过了
 
+		int renums = 0;
 		while (book != cnt)                  //记录当前需要遍历的次数
 		{
 			int i, j;
