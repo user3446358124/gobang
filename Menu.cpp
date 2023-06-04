@@ -13,7 +13,7 @@ time_t first, second;
 bool a, b, c, d, e, f;					//控制显示
 extern bool flag = 1;
 extern int nonecount;
-
+int filenum = 1;
 
 
 void playorder(void)
@@ -64,6 +64,125 @@ void playorder(void)
 	return;
 }
 
+#include <graphics.h>
+
+void selectLevelWindow()
+{
+	initgraph(Width, High+100); // 初始化绘图窗口大小
+
+	while (true)
+	{
+		BeginBatchDraw(); // 开始一批次的绘制
+
+		setbkcolor(WHITE); // 设置背景颜色为白色
+		cleardevice();    // 清空屏幕并用当前背景色填充整个屏幕
+		setcolor(BLACK);  // 设置画笔颜色为黑色
+
+		MOUSEMSG m;       // 定义鼠标消息对象
+		m = GetMouseMsg(); // 获取鼠标消息
+		int x = m.x, y = m.y; // 获取鼠标位置
+
+		switch (m.uMsg) // 根据消息类型做出不同的处理
+		{
+		case WM_MOUSEMOVE: // 鼠标移动事件
+			if (x >= 340 && x <= 460 && y >= 200 && y <= 240)
+			{
+				setcolor(RED);
+				rectangle(340, 200, 460, 240);
+				outtextxy(370, 210, L"第二关");
+			}
+			if (x >= 340 && x <= 460 && y >= 300 && y <= 340)
+			{
+				setcolor(RED);
+				rectangle(340, 300, 460, 340);
+				outtextxy(370, 310, L"第三关");
+			}
+			if (x >= 340 && x <= 460 && y >= 400 && y <= 440)
+			{
+				setcolor(RED);
+				rectangle(340, 400, 460, 440);
+				outtextxy(370, 410, L"第四关");
+			}
+			if (x >= 340 && x <= 460 && y >= 500 && y <= 540)
+			{
+				setcolor(RED);
+				rectangle(340, 500, 460, 540);
+				outtextxy(370, 510, L"第五关");
+			}
+			if (x >= 340 && x <= 460 && y >= 600 && y <= 640)
+			{
+				setcolor(RED);
+				rectangle(340, 600, 460, 640);
+				outtextxy(370, 610, L"第六关");
+			}
+			if (x >= 340 && x <= 460 && y >= 100 && y <= 140)
+			{
+				setcolor(RED);
+				rectangle(340, 100, 460, 140);
+				outtextxy(370, 110, L"第一关");
+			}
+			else
+			{
+				setcolor(BLACK);
+				rectangle(340, 100, 460, 140);
+				outtextxy(370, 110, L"第一关");
+				rectangle(340, 200, 460, 240);
+				outtextxy(370, 210, L"第二关");
+				rectangle(340, 300, 460, 340);
+				outtextxy(370, 310, L"第三关");
+				rectangle(340, 400, 460, 440);
+				outtextxy(370, 410, L"第四关");
+				rectangle(340, 500, 460, 540);
+				outtextxy(370, 510, L"第五关");
+				rectangle(340, 600, 460, 640);
+				outtextxy(370, 610, L"第六关");
+			}
+			break;
+		case WM_LBUTTONUP:
+			if (x >= 340 && x <= 460 && y >= 200 && y <= 240)
+			{
+				filenum = 2;
+				closegraph(); // 关闭绘图窗口
+				return;       // 返回选择的关卡
+			}
+			else if (x >= 340 && x <= 460 && y >= 300 && y <= 340)
+			{
+				filenum = 3;
+				closegraph(); // 关闭绘图窗口
+				return;       // 返回选择的关卡
+			}
+			else if (x >= 340 && x <= 460 && y >= 400 && y <= 440)
+			{
+				filenum = 4;
+				closegraph(); // 关闭绘图窗口
+				return;       // 返回选择的关卡
+			}
+			else if (x >= 340 && x <= 460 && y >= 500 && y <= 540)
+			{
+				filenum = 5;
+				closegraph(); // 关闭绘图窗口
+				return;       // 返回选择的关卡
+			}
+			else if (x >= 340 && x <= 460 && y >= 600 && y <= 640)
+			{
+				filenum = 6;
+				closegraph(); // 关闭绘图窗口
+				return;       // 返回选择的关卡
+			}
+			else if (x >= 340 && x <= 460 && y >= 100 && y <= 140)
+			{
+				filenum = 1;
+				closegraph(); // 关闭绘图窗口
+				return;       // 返回选择的关卡
+			}
+			break;
+		}
+
+		FlushBatchDraw(); // 刷新绘图窗口
+		EndBatchDraw();   // 结束一批次的绘制
+	}
+}
+
 int computer_and_player(void)
 {
 	MyChess mychs;
@@ -73,7 +192,6 @@ int computer_and_player(void)
 
 	std::mutex mt;                  //windows api 控制声音
 	user.Read();                    //信息
-
 
 	map = cop;
 	mychs.steps = 0;
@@ -180,9 +298,11 @@ int end_game(void)
 
 	std::mutex mt;                  //windows api 控制声音
 	user.Read();                    //信息
+	int filenum=1;
 
+	selectLevelWindow();
 
-	map = readers.read_map_from_file("level", map,1);
+	map = readers.read_map_from_file("level", map,filenum);
 
 	mychs.steps = 0;
 	initgraph(Width, High);
@@ -371,6 +491,8 @@ int online_player(void)
 			break;
 		}
 	}
+	FlushBatchDraw();
+	EndBatchDraw(); //函数表示结束一批次的绘制，将缓冲区的图形一次性绘制出来。
 
 	map = readers.read_map_from_file("level", map,1);
 	mychs.steps = 0;
