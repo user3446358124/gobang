@@ -21,6 +21,11 @@
 #include <sstream>
 #include <chrono>
 #include <tchar.h>
+#include <tchar.h>
+#include <chrono>
+#include <thread>
+#include <atomic>
+
 
 using namespace std;
 
