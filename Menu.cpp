@@ -15,6 +15,7 @@ extern bool flag = 1;
 extern int nonecount;
 
 
+
 void playorder(void)
 {
 	initgraph(Width, High);
@@ -181,7 +182,8 @@ int end_game(void)
 	user.Read();                    //信息
 
 
-	map = readers.read_map_from_file("level1.txt", map);
+	map = readers.read_map_from_file("level", map,1);
+
 	mychs.steps = 0;
 	initgraph(Width, High);
 
@@ -247,7 +249,130 @@ int online_player(void)
 	std::mutex mt;                  //windows api 控制声音
 	user.Read();                    //信息
 
-	map = readers.read_map_from_file("level1", map);
+	BeginBatchDraw();                                 //函数表示开始一批次的绘制，可以将多个图形一次性绘制出来，提高绘制效率。
+	setbkcolor(WHITE);                            //设置背景颜色为白色
+	cleardevice();                                    //清空屏幕并用当前背景色填充整个屏幕。
+	setcolor(BLACK);                              //函数将当前画笔颜色设置为黑色。
+	MOUSEMSG m; // 定义鼠标消息对象
+	while (true) // 循环监听鼠标事件
+	{
+		TCHAR str[250];																 // 定义字符数组，用于存储要输出的字符串
+		m = GetMouseMsg();															 // 获取鼠标消息
+		int x = m.x, y = m.y;														 // 获取鼠标位置
+		switch (m.uMsg)																 // 根据消息类型做出不同的处理
+		{
+		case WM_MOUSEMOVE:                                                           // 鼠标移动事件
+			if (x >= 340 && x <= 460 && y >= 200 && y <= 240)
+			{
+				setcolor(RED);                              //函数将当前画笔颜色设置为黑色。
+				rectangle(340, 200, 460, 240);              // 绘制矩形
+				outtextxy(370, 210, L"人机对战");            // 输出文本// 在鼠标位置处画一个圆圈，表示可以下
+			}
+			/*if (x >= 340 && x <= 460 && y >= 400 && y <= 440)
+			{
+				setcolor(RED);                              //函数将当前画笔颜色设置为黑色。
+				rectangle(340, 200, 460, 240);              // 绘制矩形
+				outtextxy(370, 210, L"玩家对战");            // 输出文本// 在鼠标位置处画一个圆圈，表示可以下
+			}*/
+			if (x >= 340 && x <= 460 && y >= 500 && y <= 540)
+			{
+				setcolor(RED);                              //函数将当前画笔颜色设置为黑色。
+				rectangle(340, 500, 460, 540);              // 绘制矩形
+				outtextxy(370, 510, L"先手");            // 输出文本// 在鼠标位置处画一个圆圈，表示可以下
+			}
+			if (x >= 340 && x <= 460 && y >= 540 && y <= 580)
+			{
+				setcolor(RED);                              //函数将当前画笔颜色设置为黑色。
+				rectangle(340, 540, 460, 580);              // 绘制矩形
+				outtextxy(370, 550, L"后手");            // 输出文本// 在鼠标位置处画一个圆圈，表示可以下
+			}
+			if (x >= 340 && x <= 460 && y >= 300 && y <= 340)
+			{
+				setcolor(RED);                              //函数将当前画笔颜色设置为黑色。
+				rectangle(340, 300, 460, 340);              // 绘制矩形
+				outtextxy(370, 310, L"残局闯关");            // 输出文本// 在鼠标位置处画一个圆圈，表示可以下
+			}
+			if (x >= 340 && x <= 460 && y >= 100 && y <= 140)
+			{
+				setcolor(RED);                              //函数将当前画笔颜色设置为黑色。
+				rectangle(340, 100, 460, 140);              // 绘制矩形
+				outtextxy(370, 110, L"联网对战");            // 输出文本// 在鼠标位置处画一个圆圈，表示可以下
+			}
+			else
+			{
+				setcolor(BLACK);                             //函数将当前画笔颜色设置为黑色。
+				if (a)
+				{
+					rectangle(340, 100, 460, 140); // 绘制矩形
+					outtextxy(370, 110, L"联网对战"); // 输出文本
+				}
+				if (b)
+				{
+					rectangle(340, 200, 460, 240); // 绘制矩形
+					outtextxy(370, 210, L"人机对战"); // 输出文本
+				}
+				if (c)
+				{
+					rectangle(340, 300, 460, 340); // 绘制矩形
+					outtextxy(370, 310, L"残局闯关"); // 输出文本
+				}
+				/*if (d)
+				{
+					rectangle(340, 400, 460, 440); // 绘制矩形
+					outtextxy(370, 410, L"玩家对战"); // 输出文本
+				}*/
+				if (e)
+				{
+					rectangle(340, 500, 460, 540); // 绘制矩形
+					outtextxy(370, 510, L"先手"); // 输出文本
+				}
+				if (f)
+				{
+					rectangle(340, 540, 460, 580); // 绘制矩形
+					outtextxy(370, 550, L"后手"); // 输出文本下
+				}
+			}
+			break;
+
+		case WM_LBUTTONUP:
+			if (x >= 340 && x <= 460 && y >= 540 && y <= 580)
+			{
+				f = 0;
+				firstorsecond = 0;
+			}
+			else if (x >= 340 && x <= 460 && y >= 200 && y <= 240)
+			{
+				b = 0;
+				int done = computer_and_player();
+				return 0;
+			}
+			else if (x >= 340 && x <= 460 && y >= 400 && y <= 440)
+			{
+				d = 0;
+				int done = player_and_player();
+				return 0;
+			}
+			else if (x >= 340 && x <= 460 && y >= 300 && y <= 340)
+			{
+				c = 0;
+				int done = end_game();
+				return 0;
+			}
+			else if (x >= 340 && x <= 460 && y >= 100 && y <= 140)
+			{
+				a = 0;
+				int done = online_player();
+				return 0;
+			}
+			else if (x >= 340 && x <= 460 && y >= 500 && y <= 540)
+			{
+				e = 0;
+			}
+			break;
+		}
+	}
+
+	map = readers.read_map_from_file("level", map,1);
 	mychs.steps = 0;
 	initgraph(Width, High);
 
@@ -291,7 +416,7 @@ int main()
 	setcolor(BLACK);                              //函数将当前画笔颜色设置为黑色。
 
 	rectangle(340, 100, 460, 140); // 绘制矩形
-	outtextxy(370, 110, L"联机对战"); // 输出文本
+	outtextxy(370, 110, L"联网对战"); // 输出文本
 
 	rectangle(340, 200, 460, 240); // 绘制矩形
 	outtextxy(370, 210, L"人机对战"); // 输出文本
@@ -299,8 +424,8 @@ int main()
 	rectangle(340, 300, 460, 340); // 绘制矩形
 	outtextxy(370, 310, L"残局闯关"); // 输出文本
 
-	rectangle(340, 400, 460, 440); // 绘制矩形
-	outtextxy(370, 410, L"玩家对战"); // 输出文本
+	//rectangle(340, 400, 460, 440); // 绘制矩形
+	//outtextxy(370, 410, L"玩家对战"); // 输出文本
 
 	rectangle(340, 500, 460, 540); // 绘制矩形
 	outtextxy(370, 510, L"先手"); // 输出文本
@@ -325,12 +450,12 @@ int main()
 				rectangle(340, 200, 460, 240);              // 绘制矩形
 				outtextxy(370, 210, L"人机对战");            // 输出文本// 在鼠标位置处画一个圆圈，表示可以下
 			}
-			if (x >= 340 && x <= 460 && y >= 400 && y <= 440)
+			/*if (x >= 340 && x <= 460 && y >= 400 && y <= 440)
 			{
 				setcolor(RED);                              //函数将当前画笔颜色设置为黑色。
 				rectangle(340, 200, 460, 240);              // 绘制矩形
 				outtextxy(370, 210, L"玩家对战");            // 输出文本// 在鼠标位置处画一个圆圈，表示可以下
-			}
+			}*/
 			if (x >= 340 && x <= 460 && y >= 500 && y <= 540)
 			{
 				setcolor(RED);                              //函数将当前画笔颜色设置为黑色。
@@ -361,7 +486,7 @@ int main()
 				if (a)
 				{
 					rectangle(340, 100, 460, 140); // 绘制矩形
-					outtextxy(370, 110, L"联机对战"); // 输出文本
+					outtextxy(370, 110, L"联网对战"); // 输出文本
 				}
 				if (b)
 				{
@@ -373,11 +498,11 @@ int main()
 					rectangle(340, 300, 460, 340); // 绘制矩形
 					outtextxy(370, 310, L"残局闯关"); // 输出文本
 				}
-				if (d)
+				/*if (d)
 				{
 					rectangle(340, 400, 460, 440); // 绘制矩形
 					outtextxy(370, 410, L"玩家对战"); // 输出文本
-				}
+				}*/
 				if (e)
 				{
 					rectangle(340, 500, 460, 540); // 绘制矩形
