@@ -1,5 +1,9 @@
 #include "include.h"
 
+
+
+
+
 void Users::Read(void)
 {
     ifstream in("users.txt", ios::in);               // 打开文本文件 users.txt，以输入模式打开
@@ -11,6 +15,10 @@ void Users::Read(void)
 
     in.close();                                                  // 关闭文件流
 }
+
+
+
+
 
 void Users::Write(void)
 {

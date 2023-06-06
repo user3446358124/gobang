@@ -8,6 +8,11 @@ extern std::vector<vector<int>> map;          //抽象后的地图
 extern int aiset;                             //ai决策结果
 extern double aiPos, myPos;                   //我方和电脑棋局得分
 
+
+
+
+
+
 /*评测等级*/
 void MyChess::get_grade(Users user, wchar_t*& wstr)
 {
@@ -72,6 +77,11 @@ void MyChess::get_grade(Users user, wchar_t*& wstr)
 	else
 		wstr = const_cast<wchar_t*>(L"群星之巅");
 }
+
+
+
+
+
 
 /*胜率评级*/
 void MyChess::get_assuse(wchar_t*& wstr)

@@ -14,6 +14,11 @@
 
 using namespace std;
 
+
+
+
+
+
 /*棋盘类*/
 class Chess
 {
@@ -38,6 +43,11 @@ public:
 	double GetNowPoints(int ch);
 };
 
+
+
+
+
+
 /*玩家类*/
 class MyChess : public Chess
 {
@@ -57,6 +67,11 @@ public:
 	void get_assuse(wchar_t*& wstr);                    //评价
 };
 
+
+
+
+
+
 /*电脑类*/
 class AiChess : public Chess
 {
@@ -74,11 +89,21 @@ public:
 	int AlphaBetaSearch(vector<vector<int>>& map, int depth, int alpha, int beta, bool maximizingPlayer, int& best_x, int& best_y);
 };
 
+
+
+
+
+
 /*将坐标转化为实际位置*/
 template<typename T> constexpr auto switch_xy(T x)
 {
 	return x * 30 + 20;
 }
+
+
+
+
+
 /*将实际位置转化为坐标*/
 template<typename T> constexpr auto reswitch_xy(T x)
 {

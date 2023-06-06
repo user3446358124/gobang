@@ -7,38 +7,36 @@ extern double myPos, aiPos;                           //我方和电脑棋局得分
 static const char dir1[] = { "ABCDEFGHIJKLMNOPQR" };  //
 static const char dir2[] = { "123456789ABCDEFGHI" };  //
 
+
 void Show::show(MyChess& mychs, Users& user)
 {
-	BeginBatchDraw();                                 //函数表示开始一批次的绘制，可以将多个图形一次性绘制出来，提高绘制效率。
-	setbkcolor(WHITE);                            //设置背景颜色为白色
-	cleardevice();                                    //清空屏幕并用当前背景色填充整个屏幕。
-	setcolor(BLACK);                              //函数将当前画笔颜色设置为黑色。
-	TCHAR row, col;                                   //可以是w_chat
+	BeginBatchDraw(); // 开始一批次的绘制，提高绘制效率
+	setbkcolor(WHITE); // 设置背景颜色为白色
+	cleardevice(); // 清空屏幕并用当前背景色填充整个屏幕
+	setcolor(BLACK); // 设置画笔颜色为黑色
+	TCHAR row, col; // 定义字符类型变量
 
-
-	for (int i = 20; i <= 530; i += 30)               //画横竖线
-	{
-		line(20, i, 530, i);  
-		line(i, 20, i, 530);
-		row = dir1[reswitch_xy(i)];                   //花横竖坐标
-		col = dir2[reswitch_xy(i)];
-		outtextxy(5, i - 7, row);
-		outtextxy(i - 5, 545, col);
+	// 画横竖线并显示坐标
+	for (int i = 20; i <= 530; i += 30) {
+		line(20, i, 530, i); // 画横线
+		line(i, 20, i, 530); // 画竖线
+		row = dir1[reswitch_xy(i)]; // 获取横坐标对应的字符
+		col = dir2[reswitch_xy(i)]; // 获取竖坐标对应的字符
+		outtextxy(5, i - 7, row); // 显示横坐标字符
+		outtextxy(i - 5, 545, col); // 显示竖坐标字符
 	}
 
-	/*4个小黑点*/
+	// 绘制4个小黑点
 	setfillcolor(BLACK);
 	fillcircle(170, 170, 3);
 	fillcircle(170, 380, 3);
 	fillcircle(380, 170, 3);
 	fillcircle(380, 380, 3);
 
-	for (int i = 0; i < 18; i++) 
-	{
-		for (int j = 0; j < 18; j++) 
-		{
-			if (map[i][j] != -1) 
-			{
+	// 绘制棋盘上的棋子
+	for (int i = 0; i < 18; i++) {
+		for (int j = 0; j < 18; j++) {
+			if (map[i][j] != -1) {
 				setChess(switch_xy(i), switch_xy(j), map[i][j]);
 			}
 		}
@@ -50,7 +48,7 @@ void Show::show(MyChess& mychs, Users& user)
 	mychs.get_grade(user, wstr);
 	setcolor(BLACK);
 
-	/*显示用户信息*/
+	// 显示用户信息
 	outtextxy(600, 5, _T("用户：challger"));
 	_stprintf_s(str, _T("胜场：%d"), user.wincnt);
 	outtextxy(600, 25, str);
@@ -58,7 +56,7 @@ void Show::show(MyChess& mychs, Users& user)
 	outtextxy(600, 45, str);
 	_stprintf_s(str, _T("平局：%d"), user.drawcnt);
 	outtextxy(600, 65, str);
-	_stprintf_s(str, _T("胜率：%.2f%%"), user.failcnt ? (double)user.wincnt / (double)(user.wincnt + user.failcnt) * 100: 0);
+	_stprintf_s(str, _T("胜率：%.2f%%"), user.failcnt ? (double)user.wincnt / (double)(user.wincnt + user.failcnt) * 100 : 0);
 	outtextxy(600, 85, str);
 	_stprintf_s(str, _T("段位：%s"), wstr);
 	outtextxy(600, 105, str);
@@ -67,19 +65,18 @@ void Show::show(MyChess& mychs, Users& user)
 	_stprintf_s(str, _T("剩余悔棋步数: %d"), user.restcnt);
 	outtextxy(600, 145, str);
 
-	setcolor(BLUE);                                 //右上角 画方框
+	setcolor(BLUE); // 画方框
 	line(580, 2, 580, 170);
 	line(580, 170, 735, 170);
 	line(735, 170, 735, 2);
 	line(580, 2, 735, 2);
 	setcolor(BLACK);
 
-// 显示当前步数 注意绘图时的坐标是逆的，它的 y 轴是向下的
+	// 显示当前步数
 	_stprintf_s(str, _T("您当前走了 %d 步"), mychs.steps);
 	outtextxy(600, 195, str);
 
-	// 显示当前鼠标的行列信息
-	outtextxy(600, 225, _T("当前鼠标行列："));
+	outtextxy(600, 225, _T("当前鼠标行列：")); // 显示当前鼠标的行列信息
 
 	// 绘制“悔棋”按钮
 	setcolor(RED);
@@ -87,48 +84,52 @@ void Show::show(MyChess& mychs, Users& user)
 	outtextxy(634, 276, _T("悔棋"));
 	setcolor(BLACK);
 
-	// 显示电脑刚才所下的位置
 	_stprintf_s(str, _T("电脑刚才所下位置：%c行 %c列"), dir1[aiset & 0x1f], dir2[aiset >> 5]);
-	outtextxy(570, 330, str);
+	outtextxy(570, 330, str); // 显示电脑刚才所下的位置
 
-	// 显示当前棋局得分
 	_stprintf_s(str, _T("您的棋局得分: %.1f"), myPos);
-	outtextxy(570, 370, str);
+	outtextxy(570, 370, str); // 显示当前棋局得分
 	_stprintf_s(str, _T("对方棋局得分: %.1f"), aiPos);
 	outtextxy(570, 410, str);
 
-	//胜率
 	_stprintf_s(str, _T("您目前的胜率为：%.2f%%"), 100 * myPos / (myPos + aiPos));
-	outtextxy(570, 450, str);
+	outtextxy(570, 450, str); // 显示胜率
 
-	// 显示当前局面评估信息
 	mychs.get_assuse(wstr);
 	_stprintf_s(str, _T("当前您的棋局评估：%s"), wstr);
-	outtextxy(570, 490, str);
+	outtextxy(570, 490, str); // 显示当前局面评估信息
 
-	// 显示当前回合信息
-	if (mychs.now == true)
-	{
-		outtextxy(180, 595, _T("现在是您的回合，请下棋..."));
+	if (mychs.now == true) {
+		outtextxy(180, 595, _T("现在是您的回合，请下棋...")); // 显示当前回合信息
 	}
-	else
-	{
+	else {
 		outtextxy(160, 595, _T("现在是对方的回合，请您等待..."));
 	}
 
-	FlushBatchDraw();
-	EndBatchDraw();
+	setcolor(RED);
+	rectangle(440, 580, 520, 620); // 绘制“重新开始”按钮
+	outtextxy(444, 591, _T("重新开始"));
+	setcolor(BLACK);
+	setcolor(RED);
+	rectangle(520, 580, 600, 620); // 绘制“退出游戏”按钮
+	outtextxy(524, 591, _T("退出游戏"));
+	setcolor(BLACK);
+
+	FlushBatchDraw(); // 刷新绘图缓冲区
+	EndBatchDraw(); // 结束一批次的绘制
 	return;
 }
 
+
 void Show::setChess(int x, int y, int choice)//0为电脑下棋，1为自己下棋
 {
-	setfillcolor(RED);                   //悔棋部分
-	if (!choice) 
-		setfillcolor(BLACK);
-	fillcircle(x, y, 14);
+	setfillcolor(RED);                   // 设置填充颜色为红色（用于悔棋部分）
+	if (!choice)                          // 如果choice为0（表示电脑下棋）
+		setfillcolor(BLACK);              // 将填充颜色设置为黑色
+	fillcircle(x, y, 14);                 // 在指定位置(x, y)处绘制一个半径为14的填充圆形
 	return;
 }
+
 
 void Show::Mouse(MyChess& mychs, Users& user)
 {
@@ -154,6 +155,20 @@ void Show::Mouse(MyChess& mychs, Users& user)
 				setcolor(BLUE);                                                  // 改变画笔颜色为蓝色
 				rectangle(620, 265, 680, 305);                         // 画一个蓝色的矩形框
 				outtextxy(634, 276, _T("悔棋"));                                // 输出“悔棋”字符串
+				setcolor(BLACK);                                                 // 改变画笔颜色为黑色
+			}
+			else if (m.x > 440 && m.x < 520 && m.y > 580 && m.y < 620) // 如果鼠标在退出游戏按钮范围内
+			{
+				setcolor(BLUE);                                                  // 改变画笔颜色为蓝色
+				rectangle(440, 580, 520, 620);
+				outtextxy(444, 591, _T("重新开始"));
+				setcolor(BLACK);                                                 // 改变画笔颜色为黑色
+			}
+			else if (m.x > 520 && m.x < 600 && m.y > 580 && m.y < 620) // 如果鼠标在退出游戏按钮范围内
+			{
+				setcolor(BLUE);                                                  // 改变画笔颜色为蓝色
+				rectangle(520, 580, 600, 620);
+				outtextxy(524, 591, _T("退出游戏"));                                // 输出“悔棋”字符串
 				setcolor(BLACK);                                                 // 改变画笔颜色为黑色
 			}
 			break;
@@ -200,6 +215,21 @@ void Show::Mouse(MyChess& mychs, Users& user)
 				user.Write(); // 将剩余悔棋次数写入文件
 				show(mychs, user); // 重新绘制棋盘和相关信息
 				return Mouse(mychs, user); // 继续等待鼠标事件
+			}
+			else if (m.x > 440 && m.x < 520 && m.y > 580 && m.y < 620) // 如果鼠标在退出游戏按钮范围内
+			{
+				setcolor(BLACK); // 改变画笔颜色为黑色
+			    Show::End(2, user, mychs.steps); // 显示游戏结束信息
+				setbkcolor(GREEN);
+				cleardevice();
+				exit(1); // 退出游戏
+			}
+			else if (m.x > 520 && m.x < 600 && m.y > 580 && m.y < 620) // 如果鼠标在退出游戏按钮范围内
+			{
+				Show::End(2, user, mychs.steps);
+				vector<vector<int>> cop(18, vector<int>(18, -1));
+				map = cop;
+				exit(1); // 退出游戏
 			}
 		}
 	}

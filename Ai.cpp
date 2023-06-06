@@ -26,37 +26,48 @@ int Get_Points(int x, int y, int player, const vector<vector<int>>& map);
 unsigned long long zobrist_hash[MAXM][3];
 unsigned long long zobrist_key = 0;
 
+//用于初始化 Zobrist 哈希表。它通过生成随机数来填充哈希表，以便在后续计算中使用
 void Zobrist_Init()
 {
-	srand(time(NULL));
-	for (int i = 0; i < MAXM; i++)
+	srand(time(NULL));  // 使用当前时间作为随机数种子
+	for (int i = 0; i < MAXM; i++)  // 循环遍历MAXM次
 	{
-		for (int j = 0; j < 3; j++)
+		for (int j = 0; j < 3; j++)  // 循环遍历3次
 		{
-			zobrist_hash[i][j] = ((unsigned long long)rand() << 32) | rand();
+			zobrist_hash[i][j] = ((unsigned long long)rand() << 32) | rand();  // 生成一个64位的随机数，并存入zobrist_hash数组中的对应位置
 		}
 	}
-	zobrist_key = ((unsigned long long)rand() << 32) | rand();
+	zobrist_key = ((unsigned long long)rand() << 32) | rand();  // 生成一个64位的随机数，并存入zobrist_key变量中
 }
 
 
-// 计算当前棋盘的哈希值
-unsigned long long Zobrist_Hash(vector<vector<int>>& map) {
-	unsigned long long res = 0;
-	for (int i = 0; i < MAXN; i++) {
-		for (int j = 0; j < MAXN; j++) {
-			if (map[i][j] != -1) {
-				int k = (map[i][j] == 0) ? 0 : 1;
-				res ^= zobrist_hash[i * MAXN + j][k];
+// 计算当前棋盘的哈希值 (A^B)^B = A
+unsigned long long Zobrist_Hash(vector<vector<int>>& map)
+{
+	unsigned long long res = 0;                        // 初始化哈希值为0
+	for (int i = 0; i < MAXN; i++) 
+	{                                                  // 遍历棋盘的行
+		for (int j = 0; j < MAXN; j++) 
+		{                                              // 遍历棋盘的列
+			if (map[i][j] != -1)                       
+			{                                          // 如果当前位置不为空格子
+				int k = (map[i][j] == 0) ? 0 : 1;      // 将棋子的取值转换为索引值（0表示电脑，1表示玩家）
+				res ^= zobrist_hash[i * MAXN + j][k];  // 根据位置和棋子取值，异或对应的Zobrist随机数
 			}
 		}
 	}
-	res ^= zobrist_key;
-	return res;
+	res ^= zobrist_key;                                // 对整个棋盘的哈希值再进行一次异或操作
+	return res;                                        // 返回计算得到的哈希值
 }
 
+
+
+
+
+
 // αβ剪枝函数
-int AlphaBeta(vector<vector<int>>& map, int depth, int alpha, int beta, bool max_player, int& best_x, int& best_y, unordered_map<unsigned long long, int>& cache) {
+int AlphaBeta(vector<vector<int>>& map, int depth, int alpha, int beta, bool max_player, int& best_x, int& best_y, unordered_map<unsigned long long, int>& cache)
+{
 	// 计算当前游戏状态的 Zobrist 哈希值
 	unsigned long long hash_value = Zobrist_Hash(map);
 	// 如果缓存中已经有了这个哈希值对应的结果，直接返回
@@ -75,12 +86,16 @@ int AlphaBeta(vector<vector<int>>& map, int depth, int alpha, int beta, bool max
 	int n = map.size();
 	int m = map[0].size();
 	// 初始化最佳得分
+
 	int best_score = max_player ? INT_MIN : INT_MAX;
 	// 遍历地图上的每个位置
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < m; j++) {
+	for (int i = 0; i < n; i++) 
+	{
+		for (int j = 0; j < m; j++) 
+		{
 			// 如果当前位置为空
-			if (map[i][j] == -1) {
+			if (map[i][j] == -1) 
+			{
 				// 尝试在这个位置落子
 				map[i][j] = max_player ? 0 : 1;
 				// 递归调用 AlphaBeta 函数计算得分
@@ -88,30 +103,36 @@ int AlphaBeta(vector<vector<int>>& map, int depth, int alpha, int beta, bool max
 				// 恢复地图状态
 				map[i][j] = -1;
 				// 如果是最大化玩家
-				if (max_player) {
+				if (max_player) 
+				{
 					// 更新最佳得分和最佳移动
-					if (score > best_score) {
+					if (score > best_score) 
+					{
 						best_score = score;
 						best_x = i;
 						best_y = j;
-						// 更新 alpha 值
+						                                                  // 更新 alpha 值
 						alpha = max(alpha, best_score);
-						// 如果 alpha 大于等于 beta，剪枝并返回最佳得分
-						if (alpha >= beta) {
+						                                                  // 如果 alpha 大于等于 beta，剪枝并返回最佳得分
+						if (alpha >= beta) 
+						{
 							return best_score;
 						}
 					}
 				}
-				else {
+				else 
+				{
 					// 更新最佳得分和最佳移动
-					if (score < best_score) {
+					if (score < best_score) 
+					{
 						best_score = score;
 						best_x = i;
 						best_y = j;
 						// 更新 beta 值
 						beta = min(beta, best_score);
 						// 如果 beta 小于等于 alpha，剪枝并返回最佳得分
-						if (beta <= alpha) {
+						if (beta <= alpha) 
+						{
 							return best_score;
 						}
 					}
@@ -124,144 +145,190 @@ int AlphaBeta(vector<vector<int>>& map, int depth, int alpha, int beta, bool max
 	return best_score;
 }
 
+
+
+
+
+
 // 判断五子棋棋局是否结束
 bool Is_Game_Over(vector<vector<int>>& map, int player)
 {
-	int n = map.size();
-	int m = map[0].size();
+	int n = map.size();  // 获取棋盘的行数
+	int m = map[0].size();  // 获取棋盘的列数
 
 	// 横向检查
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j <= m - 5; j++) {
+	for (int i = 0; i < n; i++) 
+	{
+		for (int j = 0; j <= m - 5; j++) 
+		{
 			bool flag = true;
-			for (int k = 0; k < 5; k++) {
+			for (int k = 0; k < 5; k++) 
+			{
 				if (map[i][j + k] != player) 
 				{
 					flag = false;
 					break;
 				}
 			}
-			if (flag) {
-				return true;
+			if (flag) 
+			{
+				return true;  // 如果有连续的5个棋子都属于当前玩家，则游戏结束
 			}
 		}
 	}
 
 	// 纵向检查
-	for (int i = 0; i <= n - 5; i++) {
-		for (int j = 0; j < m; j++) {
+	for (int i = 0; i <= n - 5; i++) 
+	{
+		for (int j = 0; j < m; j++) 
+		{
 			bool flag = true;
-			for (int k = 0; k < 5; k++) {
-				if (map[i + k][j] != player) {
+			for (int k = 0; k < 5; k++) 
+			{
+				if (map[i + k][j] != player) 
+				{
 					flag = false;
 					break;
 				}
 			}
-			if (flag) {
-				return true;
+			if (flag) 
+			{
+				return true;  // 如果有连续的5个棋子都属于当前玩家，则游戏结束
 			}
 		}
 	}
 
 	// 正对角线检查
-	for (int i = 0; i <= n - 5; i++) {
-		for (int j = 0; j <= m - 5; j++) {
+	for (int i = 0; i <= n - 5; i++) 
+	{
+		for (int j = 0; j <= m - 5; j++) 
+		{
 			bool flag = true;
-			for (int k = 0; k < 5; k++) {
-				if (map[i + k][j + k] != player) {
+			for (int k = 0; k < 5; k++) 
+			{
+				if (map[i + k][j + k] != player) 
+				{
 					flag = false;
 					break;
 				}
 			}
 			if (flag) {
-				return true;
+				return true;  // 如果有连续的5个棋子都属于当前玩家，则游戏结束
 			}
 		}
 	}
 
 	// 反对角线检查
-	for (int i = 4; i < n; i++) {
-		for (int j = 0; j <= m - 5; j++) {
+	for (int i = 4; i < n; i++) 
+	{
+		for (int j = 0; j <= m - 5; j++) 
+		{
 			bool flag = true;
-			for (int k = 0; k < 5; k++) {
-				if (map[i - k][j + k] != player) {
+			for (int k = 0; k < 5; k++) 
+			{
+				if (map[i - k][j + k] != player) 
+				{
 					flag = false;
 					break;
 				}
 			}
-			if (flag) {
-				return true;
+			if (flag) 
+			{
+				return true;  // 如果有连续的5个棋子都属于当前玩家，则游戏结束
 			}
 		}
 	}
 
-	return false;
+	return false;  // 没有符合胜利条件的情况，游戏未结束
 }
 
-int Get_Points(int x, int y, int player, const vector<vector<int>>& map){
-	int n = map.size();
-	int m = map[0].size();
-	int dx[4] = { 0, 1, 1, 1 };
-	int dy[4] = { 1, 1, 0, -1 };
-	int score = 0;
-	for (int k = 0; k < 4; k++) {
-		int count = 1;
-		bool blocked1 = false;
-		bool blocked2 = false;
-		for (int step = 1; step < 5; step++) {
-			int new_x = x + step * dx[k];
-			int new_y = y + step * dy[k];
+
+
+
+
+// 获取当前棋局的得分
+int Get_Points(int x, int y, int player, const vector<vector<int>>& map)
+{
+	int n = map.size();           // 获取棋盘的行数
+	int m = map[0].size();        // 获取棋盘的列数
+	int dx[4] = { 0, 1, 1, 1 };   // x 方向的增量
+	int dy[4] = { 1, 1, 0, -1 };  // y 方向的增量
+	int score = 0;                // 得分
+
+	for (int k = 0; k < 4; k++) {  // 遍历四个方向
+		int count = 1;             // 连续相同棋子的计数器
+		bool blocked1 = false;     // 是否被对方棋子挡住
+		bool blocked2 = false;     // 是否被空格挡住
+
+		for (int step = 1; step < 5; step++) {  // 正方向搜索
+			int new_x = x + step * dx[k];  // 计算新的 x 坐标
+			int new_y = y + step * dy[k];  // 计算新的 y 坐标
+
+			// 检查边界和对方棋子的情况
 			if (new_x < 0 || new_x >= n || new_y < 0 || new_y >= m || map[new_x][new_y] == (player ^ 1)) {
 				blocked1 = true;
 				break;
 			}
+
+			// 检查空格的情况
 			if (map[new_x][new_y] == -1) {
 				blocked2 = true;
 				break;
 			}
-			count++;
+
+			count++;  // 计数器加一
 		}
-		for (int step = 1; step < 5; step++) {
-			int new_x = x - step * dx[k];
-			int new_y = y - step * dy[k];
+
+		for (int step = 1; step < 5; step++) {  // 反方向搜索
+			int new_x = x - step * dx[k];  // 计算新的 x 坐标
+			int new_y = y - step * dy[k];  // 计算新的 y 坐标
+
+			// 检查边界和对方棋子的情况
 			if (new_x < 0 || new_x >= n || new_y < 0 || new_y >= m || map[new_x][new_y] == (player ^ 1)) {
 				blocked1 = true;
 				break;
 			}
+
+			// 检查空格的情况
 			if (map[new_x][new_y] == -1) {
 				blocked2 = true;
 				break;
 			}
-			count++;
+
+			count++;  // 计数器加一
 		}
+
 		if (!blocked1) {
 			if (count == 5) {
-				score += 10000;
+				score += 10000;  // 连五
 			}
 			else if (count == 4) {
 				if (!blocked2) {
-					score += 5000;
+					score += 5000;  // 活四
 				}
 				else {
-					score += 50;
+					score += 50;  // 死四
 				}
 			}
 			else if (count == 3) {
 				if (!blocked2) {
-					score += 1000;
+					score += 1000;  // 活三
 				}
 				else {
-					score += 5;
+					score += 5;  // 死三
+
+
 				}
 			}
 			else if (count == 2) {
 				if (!blocked2) {
-					score += 10;
+					score += 10;  // 活二
 				}
 			}
 		}
 	}
-	return score;
+
+	return score;  // 返回计算得分
 }
 
 /*alpha-beta*/
@@ -295,6 +362,8 @@ int MyChess::Get_xy(int& x, int& y)
 
 
 
+
+
 /*获取得分最高的位置，并下棋*/
 void AiChess::Get_key_Setchess(MyChess& mychs)
 {
@@ -321,10 +390,11 @@ void AiChess::Get_key_Setchess(MyChess& mychs)
 			{
 				i = rand() % 18;
 				j = rand() % 18;
-			} while (visit[i][j] != -1);
+			}
+			while (visit[i][j] != -1);
 			visit[i][j] = 0;
 			points = Get_Points(i, j, 1);
-			points = Get_Points(i, j, 1);	//计算当前位置的得
+			points = Get_Points(i, j, 1);	//计算当前位置的得分
 
 			if (points > maxpoints)         //获取最大的分点
 			{
@@ -389,6 +459,11 @@ int Chess::Get_Points(int x, int y, int ch)
 	return ret;                                                 // 返回总得分
 }
 
+
+
+
+
+
 /*获取指定位置(x,y)横向连续五个棋子的黑白数量*/
 vector<int> Chess::Get_Nums1(int x, int y)
 {
@@ -407,6 +482,11 @@ vector<int> Chess::Get_Nums1(int x, int y)
 		return {};
 	return vector<int>({ k, t });                          // 返回黑白数量
 }
+
+
+
+
+
 
 /*获取指定位置(x,y)横向连续五个棋子的黑白数量*/
 vector<int> Chess::Get_Nums2(int x, int y)
@@ -428,6 +508,11 @@ vector<int> Chess::Get_Nums2(int x, int y)
 	return vector<int>({ k, t });                        // 返回0和1的数量
 }
 
+
+
+
+
+
 /*获取指定位置(x,y)横向连续五个棋子的黑白数量*/
 vector<int> Chess::Get_Nums3(int x, int y)
 {
@@ -448,6 +533,11 @@ vector<int> Chess::Get_Nums3(int x, int y)
 	return vector<int>({ k,t });                       // 返回0和1的数量
 }
 
+
+
+
+
+
 /*获取指定位置(x,y)横向连续五个棋子的黑白数量*/
 vector<int> Chess::Get_Nums4(int x, int y)
 {
@@ -467,6 +557,11 @@ vector<int> Chess::Get_Nums4(int x, int y)
 
 	return vector<int>({ k,t });                      // 返回0和1的数量
 }
+
+
+
+
+
 
 /*通过双方棋子 通过加权 判断位置价值*/
 int Chess::xy_Points(vector<int> nums, int ch)
@@ -505,55 +600,56 @@ int Chess::xy_Points(vector<int> nums, int ch)
 	return 0;
 }
 
+
+
+
+
+
 /*遍历 评估位置的优劣*/
-double Chess::GetNowPoints(int ch)
-{
-	double ret = 0;
-	for (int i = 0; i < 18; i++)
-	{
-		for (int j = 0; j < 18; j++)
-		{
-			if (map[i][j] == ch)
-			{
-				ret += Get_Points(i, j, ch) / 100.0;
+double Chess::GetNowPoints(int ch) {
+	double ret = 0;  // 总得分
+	for (int i = 0; i < 18; i++) {  // 遍历棋盘的行
+		for (int j = 0; j < 18; j++) {  // 遍历棋盘的列
+			if (map[i][j] == ch) {  // 如果当前位置的棋子与目标棋子类型相同
+				ret += Get_Points(i, j, ch) / 100.0;  // 根据当前位置的棋子得分计算，将得分加到总得分上
 			}
 		}
 	}
-	return ret;
+	return ret;  // 返回总得分
 }
+
+
+
+
 
 /*对方 判断 是否胜利*/
-bool AiChess::gameOver(Show s, Users& user)
-{
-	for (int i = 0; i < 18; i++)
-	{
-		for (int j = 0; j < 18; j++)
-		{
-			if (map[i][j] == 0 && win(i, j))
-			{
-				s.End(-1, user, 0);
-				return true;
+bool AiChess::gameOver(Show s, Users& user) {
+	for (int i = 0; i < 18; i++) {  // 遍历棋盘的行
+		for (int j = 0; j < 18; j++) {  // 遍历棋盘的列
+			if (map[i][j] == 0 && win(i, j)) {  // 如果当前位置为空并且在该位置下棋会导致胜利
+				s.End(-1, user, 0);  // 调用 Show 类的 End 方法，游戏结束并显示胜利信息
+				return true;  // 返回 true，表示游戏已结束
 			}
 		}
 	}
-	return false;
+	return false;  // 返回 false，表示游戏未结束
 }
 
+
+
+
+
 /*我方 判断 是否胜利*/
-bool MyChess::gameOver(Show s, Users& user)
-{
-	for (int i = 0; i < 18; i++)
-	{
-		for (int j = 0; j < 18; j++)
-		{
-			if (map[i][j] == 1 && win(i, j))
-			{
-				s.End(1, user, steps);
-				return true;
+bool MyChess::gameOver(Show s, Users& user) {
+	for (int i = 0; i < 18; i++) {  // 遍历棋盘的行
+		for (int j = 0; j < 18; j++) {  // 遍历棋盘的列
+			if (map[i][j] == 1 && win(i, j)) {  // 如果当前位置为玩家自己的棋子并且在该位置下棋会导致胜利
+				s.End(1, user, steps);  // 调用 Show 类的 End 方法，游戏结束并显示胜利信息，并传递玩家自己的标识和步数
+				return true;  // 返回 true，表示游戏已结束
 			}
 		}
 	}
-	return false;
+	return false;  // 返回 false，表示游戏未结束
 }
 
 
